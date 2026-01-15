@@ -9,57 +9,86 @@ Este documento recopila todas las evidencias y respuestas de la practica.
 ### Fase 1: Instalacion y configuracion
 
 1) Servicio Nginx activo
-- Que demuestra:
-- Comando:
+- Que demuestra: Que el contenedor del servidor web Nginx está en ejecución y exponiendo el puerto 8080.
+- Comando: `docker compose up -d` y `docker compose ps`
 - Evidencia:
+
+  ![Servicio Nginx activo](practica-nginx/evidencias/docker_compose_ps.png)
 
 2) Configuracion cargada
-- Que demuestra:
-- Comando:
-- Evidencia:
+- Que demuestra: Que Nginx está cargando el fichero de configuración del sitio (`default.conf`) desde `/etc/nginx/conf.d`.
+- Comando: `docker exec -it mi_servidor_web ls -l /etc/nginx/conf.d`
+- Evidencia: 
+
+  ![default.conf en conf.d](practica-nginx/evidencias/reloj2.png)
 
 3) Resolucion de nombres
-- Que demuestra:
-- Evidencia:
+- Que demuestra: Que el nombre `cloud.local` resuelve a la máquina local y se usa para acceder al sitio en lugar de la IP.
+- Evidencia: 
+
+  ![Navegador usando cloud.local](practica-nginx/evidencias/evidencia_cloudlocal.png)
 
 4) Contenido Web
-- Que demuestra:
-- Evidencia:
+- Que demuestra: Que la página estática de CloudAcademy se está sirviendo correctamente desde el contenedor Nginx.
+- Evidencia: 
+  
+  ![Contenido de CloudAcademy](practica-nginx/evidencias/contenido_cloudacademy.png)
+
+---
 
 ### Fase 2: Transferencia SFTP (Filezilla)
 
 5) Conexion SFTP exitosa
-- Que demuestra:
-- Evidencia:
+- Que demuestra: Que el servicio SFTP acepta conexiones en `localhost:2222` con el usuario configurado.
+- Evidencia: 
+
+  ![Conexion SFTP correcta](practica-nginx/evidencias/evidencia-cruzada.png)
 
 6) Permisos de escritura
-- Que demuestra:
+- Que demuestra: Que el usuario SFTP puede subir archivos a la carpeta remota y que las transferencias finalizan correctamente.
 - Evidencia:
+  
+  ![Subida de archivos por SFTP](practica-nginx/evidencias/evidencia-permisos.png)
+
+---
 
 ### Fase 3: Infraestructura Docker
 
 7) Contenedores activos
-- Que demuestra:
-- Comando:
-- Evidencia:
+- Que demuestra: Que los contenedores de Nginx y SFTP están levantados simultáneamente y exponiendo los puertos configurados.
+- Comando: `docker compose ps`
+- Evidencia: 
+  
+  ![Contenedores Nginx y SFTP](practica-nginx/evidencias/docker_ps_sftp_nginx.png)
 
 8) Persistencia (Volumen compartido)
-- Que demuestra:
-- Evidencia:
+- Que demuestra: Que Nginx y SFTP comparten el mismo volumen, de forma que los ficheros subidos por SFTP se sirven en la web.
+- Evidencia: 
+  
+  ![Volumen compartido entre SFTP y Nginx](practica-nginx/evidencias/evidencia-cruzada.png)
 
 9) Despliegue multi-sitio
-- Que demuestra:
-- Evidencia:
+- Que demuestra: Que la segunda web (reloj) está desplegada en la subruta `/reloj` y que Nginx la sirve correctamente desde `/usr/share/nginx/html/reloj`, aunque desde el host se produce un error de conexion (`ERR_CONNECTION_REFUSED`) ajeno a la configuración del servidor.
+- Evidencia:   
+  - ![Captura reloj 1](practica-nginx/evidencias/reloj1.png)  
+  - ![Captura reloj 2](practica-nginx/evidencias/reloj2.png)  
+  - ![Captura reloj 3](practica-nginx/evidencias/reloj3.png)  
+  - ![Captura reloj 4](practica-nginx/evidencias/reloj4.png)
+
+---
 
 ### Fase 4: Seguridad HTTPS
 
 10) Cifrado SSL
-- Que demuestra:
-- Evidencia:
+- Que demuestra: Que el servidor Nginx sirve contenido por HTTPS utilizando un certificado digital autofirmado almacenado en la carpeta `certs`.
+- Evidencia:  
+
+  - ![Ficheros del certificado en el proyecto](practica-nginx/evidencias/certs.png)
 
 11) Redireccion forzada
-- Que demuestra:
-- Evidencia:
+- Que demuestra: Que las peticiones HTTP al puerto 8080 se redirigen automaticamente a HTTPS en el puerto 8443 con codigo 301.
+- Evidencia: ![Redireccion 301 de HTTP a HTTPS](practica-nginx/evidencias/evidencia_certificado2.png)
+
 
 ---
 
